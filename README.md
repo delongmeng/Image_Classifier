@@ -1,6 +1,7 @@
 
 
-# Udacity Image Classifier (AI Programming with Python)
+# Udacity Image Classifier Project
+# (AI Programming with Python Nanodegree)
 
 ## Flower image classification using PyTorch neural network models
 
@@ -60,3 +61,4 @@ python predict.py uploaded_images/french_marigold.jpg checkpoint.pth --category_
 Alternatively, you can just run "sh model_predicting_example.sh" in the terminal.
 
 
+### contact: Delong Meng, delongmeng@hotmail.com
