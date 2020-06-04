@@ -61,4 +61,6 @@ python predict.py uploaded_images/french_marigold.jpg checkpoint.pth --category_
 Alternatively, you can just run "sh model_predicting_example.sh" in the terminal.
 
 
-### contact: Delong Meng, delongmeng@hotmail.com
+
+### Author: 
+Delong Meng, delongmeng@hotmail.com
