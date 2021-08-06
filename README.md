@@ -1,7 +1,7 @@
 
 
-# Udacity Image Classifier Project
-# (AI Programming with Python Nanodegree)
+# Image Classifier Project
+# (AI Programming with Python)
 
 ## Flower image classification using PyTorch neural network models
 
