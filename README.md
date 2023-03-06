@@ -1,7 +1,6 @@
 
 
-# Image Classifier Project
-# (AI Programming with Python)
+# Image Classifier
 
 ## Flower image classification using PyTorch neural network models
 
