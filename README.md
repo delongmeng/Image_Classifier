@@ -1,17 +1,19 @@
 
 
-# Image Classifier
+# Flower image classification using PyTorch neural network models
 
-## Flower image classification using PyTorch neural network models
 
-### Overview
+## Overview
 
-Deep learning is one of the most powful tools for image recoganization. This project aims to showcase how neural network deep learning models can be trained in a PyTorch platform and used to make prediction. The application here is to recognize 102 different species of flowers. The original dataset can be found here: http://www.robots.ox.ac.uk/~vgg/data/flowers/102/index.html. All the images are in the `flowers` folder. In the training set there are more than 6000 images of flowers. Considering the relatively small sample size, it will be a good idea to perform a transfer learning, in which a pretrained neural network model (such as VGG and Alexnet) will be borrowed, and only the last several layers will be trained on the flower training set to fine-tune the weights. ReLU activation and Softmax output are used. Dropout method is used to avoid over-fitting. 
+Deep learning is one of the most powful tools for image recoganization. This project aims to showcase how neural network deep learning models can be trained in a PyTorch platform and used to make prediction. In addition, the second part is about how to deploy the trained model using AWS Elastic Kubernetes Service (EKS).
+
+## Model training
+
+The application here is to recognize 102 different species of flowers. The original dataset can be found here: http://www.robots.ox.ac.uk/~vgg/data/flowers/102/index.html. All the images are in the `flowers` folder. In the training set there are more than 6000 images of flowers. Considering the relatively small sample size, it will be a good idea to perform a transfer learning, in which a pretrained neural network model (such as VGG and Alexnet) will be borrowed, and only the last several layers will be trained on the flower training set to fine-tune the weights. ReLU activation and Softmax output are used. Dropout method is used to avoid over-fitting. 
 
 During the training process, the model was also tested on the validation dataset, and the loss and accuracy were displayed. After the model was trained, it was applied on the test dataset and achieved an accuracy rate of around 80%. Images can also be provided by user for the prediction of flower species. The top k (for example top 5) classes will be returned with corresponding probabilities.
 
 GPU is recommended to use for the training process, and the estimated training time using GPU is around 30-60 minutes. Once training is done, the model will be saved. Using the saved model, prediction can be made very fast.
-
 
 ### Notebook file
 
@@ -64,6 +66,86 @@ python predict.py uploaded_images/french_marigold.jpg checkpoint.pth --category_
 Alternatively, you can just run `sh model_predicting_example.sh` in the terminal.
 
 
+## Model deployment using EKS
 
-### Author: 
-Delong Meng, delongmeng@hotmail.com
+### Environment setup
+
+First we can set up an EC2 instance. Within the instance, set up the environment:
+
+```
+# Install aws
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+# manage account credentials
+aws configure
+
+# Install kubectl
+curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+
+export KUBECONFIG=/etc/kubernetes/admin.conf or $HOME/.kube/config
+
+kubectl version --short --client
+
+# Install eksctl
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+eksctl version
+```
+
+### Create EKS cluster
+
+Here we create a EKS cluster from the EC2 instance which generate 2 EC2 instances.
+
+```
+eksctl create cluster -f eks_config.yaml
+
+# check the nodes
+kubectl get nodes -o wide
+
+# view the workloads
+get pods --all-namespaces -o wide
+
+# get cluster IP
+kubectl get svc
+```
+
+### Install Docker and build an image
+
+```
+# install Docker 
+
+sudo yum update -y
+sudo amazon-linux-extras install docker
+sudo service docker start
+sudo systemctl enable docker
+sudo usermod -a -G docker ec2-user
+sudo chmod 666 /var/run/docker.sock
+docker info
+
+# build image
+docker build -t classifier-docker .
+```
+
+
+### Deploy to cluster and build a server
+
+```
+# deploy to cluster
+kubectl create -f eks_job.yaml
+
+
+# build a server
+pip3 install kubernetes  
+pip3 install Flask
+python3 server.py 
+```
+
+
+
+
+

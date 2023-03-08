@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: classifier-
+spec:
+  template:
+    spec:
+      containers:
+      - name: classifier
+        image: classifier-docker
+        env:
+        - name: MODEL
+          value: "VGG13"
+        - name: IMAGEPATH
+          value: "test/myflower.jpg"
+      restartPolicy: Never
+  backoffLimit: 2
