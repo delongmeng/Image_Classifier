@@ -15,7 +15,7 @@ GPU is recommended to use for the training process, and the estimated training t
 
 ### Notebook file
 
-Please refer to the Jupyter Notebook file `Image Classifier Project.ipynb` for the implementation of the model training and prediction. The VGG19 model was used as the pre-trained model. The trained model was saved in `DM_vgg19_checkpoint.pth`, which can be loaded to make quick prediction on any input images. The input image and prediction result are nicely displayed in a plot. For example, for a flower image randomly downloaded from internet, this model successfully predicted its category. Please refer to the end of the notebook, as well as the screenshot `predicting_uploaded_images_output.jpg`.
+Please refer to the Jupyter Notebook file `Image_Classifier.ipynb` for the implementation of the model training and prediction. The VGG19 model was used as the pre-trained model. The trained model was saved in `DM_vgg19_checkpoint.pth`, which can be loaded to make quick prediction on any input images. The input image and prediction result are nicely displayed in a plot. For example, for a flower image randomly downloaded from internet, this model successfully predicted its category. Please refer to the end of the notebook, as well as the screenshot `predicting_uploaded_images_output.jpg`.
 
 
 ### Command line scripts
